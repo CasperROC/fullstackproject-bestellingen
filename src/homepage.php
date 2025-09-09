@@ -37,7 +37,7 @@ $pass = $_SESSION["password"];
         $servername = "mysql";
     $username = "root";
     $password = "password";
- $conn = new mysqli($servername, $username, $password, "zingusDB");
+ $conn = new mysqli($servername, $username, $password, "mydb");
         if ($conn->connect_error) {
   die(" Connection failed: " . $conn->connect_error);}
 
@@ -70,7 +70,8 @@ echo "Welcome, " . $name;
   <a href="userlijst.php" class="button">account list</a>
 <a href="login.php" class="button">log out</a>
 <a href="changepass.php" class="button">change password</a>
-
+<a href="Voorraad.php" class="button">Voorraad/bestellingen</a>
+<a href="Voorraad copy.php" class="button">Voorraad/bestellingen AAAAAAAA</a>
 </body>
 </html>
 

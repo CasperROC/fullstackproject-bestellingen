@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $newPassword = $_POST['new_password'];
 
 
-     $conn = new mysqli($servername, $dbUser, $password, "zingusDB");
+     $conn = new mysqli($servername, $dbUser, $password, "mydb");
         if ($conn->connect_error) {
   die(" Connection failed: " . $conn->connect_error);}
 
