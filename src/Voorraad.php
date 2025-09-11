@@ -17,6 +17,8 @@ $pass = $_SESSION["password"];
  $conn = new mysqli($servername, $username, $password, "mydb");
         if ($conn->connect_error) {
   die(" Connection failed: " . $conn->connect_error);}
+
+  $action = $_POST["action"] ?? "";
 ?>
 
 <!DOCTYPE html>
@@ -31,13 +33,19 @@ $pass = $_SESSION["password"];
     <p>Welkom, <?php echo htmlspecialchars($name); ?>!</p>
 
     <form action="" method="post">
+          <input type="hidden" name="action" value="add">
 Name of new location: <input type="text" name="locationName" minlength="3" maxlength="25"><br>
 <input id="verzenden" type="submit" value="submit">
-
-    <a href="homepage.php" class="button">Terug naar Home</a>
+        </form>
+   
 </body>
 <?php
-$locName = $_POST["locationName"];
+
+if ($_SERVER["REQUEST_METHOD"] === "POST"){
+$action = $_POST["action"] ?? "";
+
+if ($action === "add" && isset($_POST["locationName"])){
+$locName = $_POST["locationName"] ?? "";
 
 $insert_stmt = $conn->prepare("INSERT INTO locatie (Naam) VALUES (?)");
 $insert_stmt->bind_param("s", $locName);
@@ -48,6 +56,59 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["locationName"])){
         echo "Fout bij aanmaking: " . $insert_stmt->error;
     }
     $insert_stmt->close();
+    
+}
+}
+}
+
+
+
+if ($action === "delete" && isset($_POST["Naam"])) {
+$delete_locname = $_POST['Naam'] ?? null;
+if (!$delete_locname) {
+    echo "Geen locatie gespecificeerd.";
+    exit();
+}
+
+if ($delete_locname){
+        $stmt = $conn->prepare("DELETE FROM locatie WHERE Naam = ?");
+    $stmt->bind_param("s", $delete_locname);
+
+    if ($stmt->execute()) {
+        echo "successfully deleted " . htmlspecialchars($delete_locname) . "!";
+                
+
+    } else {
+        echo "Fout bij verwijderen van gebruiker.";
+    }
+
+    $stmt->close();
+    
+}
+}
+
+$locNameList = "SELECT Naam FROM locatie";
+$locListResult = $conn->query($locNameList);
+
+if ($locListResult->num_rows > 0) {
+    echo "<ul>";
+
+    while($row = $locListResult->fetch_assoc()){
+    $Naam = htmlspecialchars($row["Naam"]);
+    echo "<li style='margin-bottom:10px;'>
+            $Naam 
+            <form method='post' action='' style='display:inline;'>
+                <input type='hidden' name='action' value='delete'>
+                <input type='hidden' name='Naam' value='$Naam'>
+                <button type='submit'>Verwijder</button>
+            </form>
+          </li>";
+
+    }
 }
 ?>
 </html>
+<body>
+    <hr>
+     <a href="homepage.php" class="button">Terug naar Home</a>
+</body>
