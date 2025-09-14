@@ -87,19 +87,21 @@ if ($delete_locname){
 }
 }
 
-$locNameList = "SELECT Naam FROM locatie";
+$locNameList = "SELECT Id, Naam FROM locatie";
 $locListResult = $conn->query($locNameList);
 
 if ($locListResult->num_rows > 0) {
     echo "<ul>";
 
     while($row = $locListResult->fetch_assoc()){
+        $Id = htmlspecialchars($row["Id"]);
     $Naam = htmlspecialchars($row["Naam"]);
     echo "<li style='margin-bottom:10px;'>
-            $Naam 
+            Id: $Id <br>
+            Naam: $Naam <br>
             <form method='post' action='' style='display:inline;'>
                 <input type='hidden' name='action' value='delete'>
-                <input type='hidden' name='Naam' value='$Naam'>
+                <input type='hidden' name='Id' value='$Id'>
                 <button type='submit'>Verwijder</button>
             </form>
           </li>";

@@ -70,8 +70,9 @@ echo "Welcome, " . $name;
   <a href="userlijst.php" class="button">account list</a>
 <a href="login.php" class="button">log out</a>
 <a href="changepass.php" class="button">change password</a>
-<a href="Voorraad.php" class="button">Voorraad/bestellingen</a>
-<a href="Voorraad copy.php" class="button">Voorraad/bestellingen AAAAAAAA</a>
+<a href="addlocation.php" class="button">Locations List</a>
+<a href="addproduct.php" class="button">Products List</a>
+<a href="bestellingen.php" class="button">Order products</a>
 </body>
 </html>
 
