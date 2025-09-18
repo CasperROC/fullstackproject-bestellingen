@@ -85,7 +85,7 @@ if ($delete_product){
                 
 
     } else {
-        echo "Fout bij verwijderen van gebruiker.";
+        echo "Fout bij verwijderen van product.";
     }
 
     $stmt->close();

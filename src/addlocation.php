@@ -34,7 +34,7 @@ $pass = $_SESSION["password"];
 
     <form action="" method="post">
           <input type="hidden" name="action" value="add">
-Name of new location: <input type="text" name="locationName" minlength="3" maxlength="25"><br>
+Name of new location: <input type="text" name="locationName" minlength="1" maxlength="25"><br>
 <input id="verzenden" type="submit" value="submit">
         </form>
    
@@ -79,7 +79,7 @@ if ($delete_locname){
                 
 
     } else {
-        echo "Fout bij verwijderen van gebruiker.";
+        echo "Fout bij verwijderen van locatie.";
     }
 
     $stmt->close();
