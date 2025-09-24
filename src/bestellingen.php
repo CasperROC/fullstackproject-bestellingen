@@ -11,6 +11,7 @@ if (!isset($_SESSION["name"])) {
 $name = $_SESSION["name"];
 $pass = $_SESSION["password"];
 $action = $_POST["action"] ?? "";
+$action2 = $_POST["action2"] ?? "";
 ?>
 
 <!DOCTYPE html>
@@ -52,8 +53,8 @@ $action = $_POST["action"] ?? "";
             <?php endwhile; ?>
         </select>
 
-        <input type="hidden" name="amountaction" value="add">
-        Amount: <input type="number" name="Amount" min="1" max="999999"><br>
+        <input type="hidden" name="aantalaction" value="add">
+        Aantal: <input type="number" name="Aantal" min="1" max="999999"><br>
         <input id="bestellingverzenden" type="submit" name="bestellingsubmit" value="bestel">
     </form>
 
@@ -65,10 +66,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     if ($bestellingsubmit === "bestel"){
         $locatieIDbestelling = $_POST["locatie_id"] ?? "";
         $productIDbestelling = $_POST["product_id"] ?? "";
-        $AmountBestelling = $_POST["Amount"] ?? "";
+        $AantalBestelling = $_POST["Aantal"] ?? "";
 
         $insert_stmt = $conn->prepare("INSERT INTO bestelling (locatieID_besteld, productID_besteld, aantalbesteld) VALUES (?, ?, ?)");
-        $insert_stmt->bind_param("iii", $locatieIDbestelling, $productIDbestelling, $AmountBestelling);
+        $insert_stmt->bind_param("iii", $locatieIDbestelling, $productIDbestelling, $AantalBestelling);
 
         if ($insert_stmt->execute()) {
             echo "bestelling " . htmlspecialchars($locatieIDbestelling) . ", " . htmlspecialchars($productIDbestelling) ." is aangemaakt.";
@@ -92,7 +93,7 @@ if ($action === "delete" && isset($_POST["Id"])) {
         $stmt->bind_param("i", $delete_bestelling);
 
         if ($stmt->execute()) {
-            echo "successfully deleted " . htmlspecialchars($delete_bestelling) . "!";
+            echo "successfully deleted " . htmlspecialchars($delete_bestelling) . ".    ";
         } else {
             echo "Fout bij verwijderen van bestelling.";
         }
@@ -102,17 +103,18 @@ if ($action === "delete" && isset($_POST["Id"])) {
 }
 
 // Bestelling claimen → toevoegen aan locatie_has_product
-if ($action === "claim" && isset($_POST["Id"])) {
-    $location_ID = $_POST['locID'] ?? null;
+if ($action2 === "claim" && isset($_POST["Id"])) {
+    $locatie_ID = $_POST['locID'] ?? null;
     $product_ID = $_POST['prodID'] ?? null;
-    $amountofproduct = $_POST['amount'] ?? null;
+    $prodAantal = $_POST['aantal'] ?? null;
 
-    if ($location_ID && $product_ID && $amountofproduct) {
-        $insert_stmt = $conn->prepare("INSERT INTO locatie_has_product (locatie_Id1, product_Id1, Aantal) VALUES (?, ?, ?)");
-        $insert_stmt->bind_param("iii", $location_ID, $product_ID, $amountofproduct);
-
+    if ($locatie_ID && $product_ID && $prodAantal) {
+        $insert_stmt = $conn->prepare("INSERT INTO locatie_has_product (locatie_Id1, product_Id1, Aantal) VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE Aantal = Aantal + ?");
+        $insert_stmt->bind_param("iiii", $locatie_ID, $product_ID, $prodAantal, $prodAantal);
+ 
         if ($insert_stmt->execute()) {
-            echo "Product (locatie: " . htmlspecialchars($location_ID) . ", product: " . htmlspecialchars($product_ID) . ") is aangemaakt.";
+            echo "Product (locatie: " . htmlspecialchars($locatie_ID) . ", product: " . htmlspecialchars($product_ID) . ") is aangemaakt.   ";
         } else {
             echo "Fout bij aanmaking: " . $insert_stmt->error;
         }
@@ -123,33 +125,34 @@ if ($action === "claim" && isset($_POST["Id"])) {
 }
 
 // Bestellingenlijst tonen
-$bestellingList = "SELECT Id, locatieID_besteld, productID_besteld, aantalbesteld FROM bestelling";
-$bestelListResult = $conn->query($bestellingList);
+$bestellingLijst = "SELECT Id, locatieID_besteld, productID_besteld, aantalbesteld FROM bestelling";
+$bestelLijstResult = $conn->query($bestellingLijst);
 
-if ($bestelListResult->num_rows > 0) {
+if ($bestelLijstResult->num_rows > 0) {
     echo "<ul>";
 
-    while($row = $bestelListResult->fetch_assoc()){
+    while($row = $bestelLijstResult->fetch_assoc()){
         $Id = $row["Id"];
         $locID = $row["locatieID_besteld"];
         $prodID = $row["productID_besteld"];
-        $amount = $row["aantalbesteld"];
+        $aantal = $row["aantalbesteld"];
         echo "<li style='margin-bottom:10px;'>
                 Id: $Id<br>
                 locationID: $locID <br>
                 productID: $prodID <br>
-                amount: $amount <br>
+                aantal: $aantal <br>
                 <form method='post' action='' style='display:inline;'>
                     <input type='hidden' name='action' value='delete'>
                     <input type='hidden' name='Id' value='$Id'>
                     <button type='submit'>Verwijder</button>
                 </form>
                 <form method='post' action='' style='display:inline;'>
-                    <input type='hidden' name='action' value='claim'>
+                    <input type='hidden' name='action2' value='claim'>
+                         <input type='hidden' name='action' value='delete'>
                     <input type='hidden' name='Id' value='$Id'>
                     <input type='hidden' name='locID' value='$locID'>
                     <input type='hidden' name='prodID' value='$prodID'>
-                    <input type='hidden' name='amount' value='$amount'>
+                    <input type='hidden' name='aantal' value='$aantal'>
                     <button type='submit'>Ontvangen</button>
                 </form>
               </li>";

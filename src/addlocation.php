@@ -45,13 +45,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 $action = $_POST["action"] ?? "";
 
 if ($action === "add" && isset($_POST["locationName"])){
-$locName = $_POST["locationName"] ?? "";
+$locNaam = $_POST["locationName"];
 
 $insert_stmt = $conn->prepare("INSERT INTO locatie (Naam) VALUES (?)");
-$insert_stmt->bind_param("s", $locName);
+$insert_stmt->bind_param("s", $locNaam);
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["locationName"])){
     if ($insert_stmt->execute()) {
-        echo "locatie " . htmlspecialchars($locName) . " is aangemaakt.";
+        echo "locatie " . htmlspecialchars($locNaam) . " is aangemaakt.";
     } else {
         echo "Fout bij aanmaking: " . $insert_stmt->error;
     }
@@ -63,19 +63,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["locationName"])){
 
 
 
-if ($action === "delete" && isset($_POST["Naam"])) {
-$delete_locname = $_POST['Naam'] ?? null;
-if (!$delete_locname) {
+if ($action === "verwijder" && isset($_POST["Naam"])) {
+$verwijder_locnaam = $_POST['Naam'] ?? null;
+if (!$verwijder_locnaam) {
     echo "Geen locatie gespecificeerd.";
     exit();
 }
 
-if ($delete_locname){
+if ($verwijder_locnaam){
         $stmt = $conn->prepare("DELETE FROM locatie WHERE Naam = ?");
-    $stmt->bind_param("s", $delete_locname);
+    $stmt->bind_param("s", $verwijder_locnaam);
 
     if ($stmt->execute()) {
-        echo "successfully deleted " . htmlspecialchars($delete_locname) . "!";
+        echo "Succesvol verwijderd " . htmlspecialchars($verwijder_locnaam) . "!";
                 
 
     } else {
@@ -87,20 +87,20 @@ if ($delete_locname){
 }
 }
 
-$locNameList = "SELECT Id, Naam FROM locatie";
-$locListResult = $conn->query($locNameList);
+$locNaamLijst = "SELECT Id, Naam FROM locatie";
+$locLijstResult = $conn->query($locNaamLijst);
 
-if ($locListResult->num_rows > 0) {
+if ($locLijstResult->num_rows > 0) {
     echo "<ul>";
 
-    while($row = $locListResult->fetch_assoc()){
+    while($row = $locLijstResult->fetch_assoc()){
         $Id = htmlspecialchars($row["Id"]);
     $Naam = htmlspecialchars($row["Naam"]);
     echo "<li style='margin-bottom:10px;'>
             Id: $Id <br>
             Naam: $Naam <br>
             <form method='post' action='' style='display:inline;'>
-                <input type='hidden' name='action' value='delete'>
+                <input type='hidden' name='action' value='verwijder'>
                 <input type='hidden' name='Id' value='$Id'>
                 <button type='submit'>Verwijder</button>
             </form>

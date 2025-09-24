@@ -67,12 +67,13 @@ echo "Welcome, " . $name;
 ?>
 
 <p>homepage!<p>
-  <a href="userlijst.php" class="button">account list</a>
-<a href="login.php" class="button">log out</a>
-<a href="changepass.php" class="button">change password</a>
+  <a href="userlijst.php" class="button">Account list</a>
+<a href="login.php" class="button">Log out</a>
+<a href="changepass.php" class="button">Change password</a>
 <a href="addlocation.php" class="button">Locations List</a>
 <a href="addproduct.php" class="button">Products List</a>
 <a href="bestellingen.php" class="button">Order products</a>
+<a href="LocHasProduct.php" class="button">Current stock</a>
 </body>
 </html>
 

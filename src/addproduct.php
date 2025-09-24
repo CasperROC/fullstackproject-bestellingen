@@ -34,10 +34,10 @@ $pass = $_SESSION["password"];
 
     <form action="" method="post">
           <input type="hidden" name="action" value="add">
-Name of new product: <input type="text" name="productNaam" minlength="3" maxlength="25"><br>
-Name of product type: <input type="text" name="productType" minlength="3" maxlength="25"><br>
-Name of product factory: <input type="text" name="productFabriek" minlength="3" maxlength="25"><br>
-Name of product price: <input type="text" name="productPrijs" minlength="1" maxlength="25"><br>
+Naam van nieuw product: <input type="text" name="productNaam" minlength="3" maxlength="25"><br>
+Naam van product type: <input type="text" name="productType" minlength="3" maxlength="25"><br>
+Naam van fabriek: <input type="text" name="productFabriek" minlength="3" maxlength="25"><br>
+product prijs: <input type="text" name="productPrijs" minlength="1" maxlength="25"><br>
 <input id="verzenden" type="submit" value="submit">
         </form>
    
@@ -48,16 +48,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 $action = $_POST["action"] ?? "";
 
 if ($action === "add" && isset($_POST["productNaam"], $_POST["productType"], $_POST["productFabriek"], $_POST["productPrijs"])){
-$prodName = $_POST["productNaam"] ?? "";
+$prodNaam = $_POST["productNaam"] ?? "";
 $prodType = $_POST["productType"] ?? "";
-$prodFactory = $_POST["productFabriek"] ?? "";
-$prodPrice = $_POST["productPrijs"] ?? "";
+$prodFabriek = $_POST["productFabriek"] ?? "";
+$prodPrijs = $_POST["productPrijs"] ?? "";
 
 $insert_stmt = $conn->prepare("INSERT INTO product (Naam, Typey, Fabriek, Prijs) VALUES (?, ?, ?, ?)");
-$insert_stmt->bind_param("sssd", $prodName, $prodType, $prodFactory, $prodPrice);
+$insert_stmt->bind_param("sssd", $prodNaam, $prodType, $prodFabriek, $prodPrijs);
 
     if ($insert_stmt->execute()) {
-        echo "product " . htmlspecialchars($prodName) . " is aangemaakt.";
+        echo "product " . htmlspecialchars($prodNaam) . " is aangemaakt.";
     } else {
         echo "Fout bij aanmaking: " . $insert_stmt->error;
     }
@@ -69,9 +69,9 @@ $insert_stmt->bind_param("sssd", $prodName, $prodType, $prodFactory, $prodPrice)
 
 
 
-if ($action === "delete" && isset($_POST["Id"])) {
-$delete_product = $_POST['Id'] ?? null;
-if (!$delete_product) {
+if ($action === "verwijder" && isset($_POST["Id"])) {
+$verwijder_product = $_POST['Id'] ?? null;
+if (!$verwijder_product) {
     echo "Geen product gespecificeerd.";
     exit();
 }
@@ -93,27 +93,27 @@ if ($delete_product){
 }
 }
 
-$prodList = "SELECT * FROM product";
-$prodListResult = $conn->query($prodList);
+$prodLijst = "SELECT * FROM product";
+$prodLijstResult = $conn->query($prodLijst);
 
-if ($prodListResult->num_rows > 0) {
+if ($prodLijstResult->num_rows > 0) {
     echo "<ul>";
 
-    while($row = $prodListResult->fetch_assoc()){
-        $prodId = htmlspecialchars($row["Id"]);
-    $prodNaam = htmlspecialchars($row["Naam"]);
-    $prodType = htmlspecialchars($row["Typey"]);
-    $prodFabriek = htmlspecialchars($row["Fabriek"]);
-    $prodPrijs = htmlspecialchars($row["Prijs"]);
+    while($row = $prodLijstResult->fetch_assoc()){
+        $prodIdlijst = htmlspecialchars($row["Id"]);
+    $prodNaamlijst = htmlspecialchars($row["Naam"]);
+    $prodTypelijst = htmlspecialchars($row["Typey"]);
+    $prodFabrieklijst = htmlspecialchars($row["Fabriek"]);
+    $prodPrijslijst = htmlspecialchars($row["Prijs"]);
     echo "<li style='margin-bottom:10px;'>
-            Id: $prodId <br>
-            Naam: $prodNaam <br>
-            Type: $prodType <br>
-            Fabriek: $prodFabriek <br>
-            Prijs: $prodPrijs <br>
+            Id: $prodIdlijst <br>
+            Naam: $prodNaamlijst <br>
+            Type: $prodTypelijst <br>
+            Fabriek: $prodFabrieklijst <br>
+            Prijs: $prodPrijslijst <br>
          <form method='post' action='' style='display:inline;'>
-    <input type='hidden' name='action' value='delete'>
-    <input type='hidden' name='Id' value='$prodId'>
+    <input type='hidden' name='action' value='verwijder'>
+    <input type='hidden' name='Id' value='$prodIdlijst'>
     <button type='submit'>Verwijder</button>
 </form>
 
