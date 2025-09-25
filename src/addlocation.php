@@ -14,7 +14,7 @@ $pass = $_SESSION["password"];
         $servername = "mysql";
     $username = "root";
     $password = "password";
- $conn = new mysqli($servername, $username, $password, "mydb");
+ $conn = new mysqli($servername, $username, $password, "Newmydb");
         if ($conn->connect_error) {
   die(" Connection failed: " . $conn->connect_error);}
 
@@ -63,15 +63,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["locationName"])){
 
 
 
-if ($action === "verwijder" && isset($_POST["Naam"])) {
-$verwijder_locnaam = $_POST['Naam'] ?? null;
+if ($action === "verwijder" && isset($_POST["Id"])) {
+$verwijder_locnaam = $_POST['Id'] ?? null;
 if (!$verwijder_locnaam) {
     echo "Geen locatie gespecificeerd.";
     exit();
 }
 
 if ($verwijder_locnaam){
-        $stmt = $conn->prepare("DELETE FROM locatie WHERE Naam = ?");
+        $stmt = $conn->prepare("DELETE FROM locatie WHERE Id = ?");
     $stmt->bind_param("s", $verwijder_locnaam);
 
     if ($stmt->execute()) {

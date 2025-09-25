@@ -14,7 +14,7 @@ $pass = $_SESSION["password"];
 $servername = "mysql";
 $username = "root";
 $password = "password";
-$conn = new mysqli($servername, $username, $password, "Newmydb");
+$conn = new mysqli($servername, $username, $password, "mydb");
 if ($conn->connect_error) {
     die(" Connection failed: " . $conn->connect_error);
 }
@@ -46,7 +46,7 @@ $result = $conn->query($sql);
     <select name="locatie_Id1" id="locatie">
         <?php while($row = $result->fetch_assoc()): ?>
             <option value="<?= $row['Id'] ?>">
-                <?= ($filterLocatie == $row['Id']) ? 'geselecteerd' : '' ?>>
+                <?= ($filterLocatie == $row['Id']) ? 'selected' : '' ?>>
                 <?= $row['Naam'] ?>
             </option>
         <?php endwhile; ?>
@@ -62,20 +62,19 @@ $result = $conn->query($sql);
 //VEILIG MET PREPARED STATEMENTS NACHECKEN?
 
 
-if ($action === "delete" && isset($_POST["ID1"]) && isset($_POST["ID2"])) {
-    $delete_product = $_POST['ID1'] ?? null;
-     $delete_product2 = $_POST['ID2'] ?? null;
-    if (!$delete_product || !$delete_product2) {
+if ($action === "delete" && isset($_POST["Id"])) {
+    $delete_product = $_POST['Id'] ?? null;
+    if (!$delete_product) {
         echo "Geen product gespecificeerd.";
         exit();
     }
 
-    if ($delete_product && $delete_product2) {
-        $stmt = $conn->prepare("DELETE FROM locatie_has_product WHERE locatie_Id1 = ? AND product_Id1 = ?");
-        $stmt->bind_param("ii", $delete_product, $delete_product2);
+    if ($delete_product) {
+        $stmt = $conn->prepare("DELETE FROM product WHERE Id = ?");
+        $stmt->bind_param("i", $delete_product);
 
         if ($stmt->execute()) {
-            echo "product met id " . htmlspecialchars($delete_product) . " " . htmlspecialchars($delete_product2) . " is verwijderd!";
+            echo "product met id " . htmlspecialchars($delete_product) . "!";
         } else {
             echo "Fout bij verwijderen van product.";
         }
@@ -84,21 +83,10 @@ if ($action === "delete" && isset($_POST["ID1"]) && isset($_POST["ID2"])) {
     }
 }
 
-$VrdLijst = "SELECT lhp.Aantal,
-
-  lhp.locatie_Id1,
-  lhp.product_Id1,
-   l.Naam AS locatieNaam,
-    p.Naam AS productNaam,
-    p.Prijs AS productPrijs,
-    p.prijs * lhp.Aantal AS WaardeInkoop1,
-     ROUND(p.prijs * lhp.Aantal * 1.2, 2) AS WaardeVerkoop1
-FROM locatie_has_product lhp
-JOIN locatie l ON l.Id = lhp.locatie_Id1
-JOIN product p ON p.Id = lhp.product_Id1";
+$VrdLijst = "SELECT * FROM locatie_has_product";
 
 if ($action === "filterLoc" && $filterLocatie) {
-    $VrdLijst .= " WHERE lhp.locatie_Id1 = " . intval($filterLocatie);
+    $VrdLijst .= " WHERE locatie_Id1 = " . intval($filterLocatie);
 }
 if ($action === "unfilter" && $filterLocatie) {
     $VrdLijst .= null;
@@ -113,20 +101,17 @@ if ($VrdLijstResult->num_rows > 0) {
         $LocID = htmlspecialchars($row["locatie_Id1"] ?? "");
         $ProdID = htmlspecialchars($row["product_Id1"] ?? "");
         $Aantal = htmlspecialchars($row["Aantal"] ?? "");
-        $Inkoop = htmlspecialchars($row["WaardeInkoop1"] ?? "");
-        $Verkoop = htmlspecialchars($row["WaardeVerkoop1"] ?? "");
-        $locNaam = htmlspecialchars($row["locatieNaam"] ?? "");
-        $prodNaam = htmlspecialchars($row["productNaam"] ?? "");
+        $Inkoop = htmlspecialchars($row["WaardeInkoop"] ?? "");
+        $Verkoop = htmlspecialchars($row["WaardeVerkoop"] ?? "");
         echo "<li style='margin-bottom:10px;'>
-                Locatie: $LocID, $locNaam <br>
-                Product: $ProdID, $prodNaam <br>
+                Locatie: $LocID<br>
+                Product: $ProdID<br>
                 Aantal op voorraad: $Aantal <br>
                 inkoopwaarde: $Inkoop <br>
                 Verkoopwaarde: $Verkoop <br>
              <form method='post' action='' style='display:inline;'>
                 <input type='hidden' name='action' value='delete'>
-                <input type='hidden' name='ID1' value='$LocID'>
-                <input type='hidden' name='ID2' value='$ProdID'>
+                <input type='hidden' name='Id' value='$LocID'>
                 <button type='submit'>Verwijder</button>
             </form>
               </li>";

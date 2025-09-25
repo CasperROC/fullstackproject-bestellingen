@@ -14,7 +14,7 @@ $pass = $_SESSION["password"];
         $servername = "mysql";
     $username = "root";
     $password = "password";
- $conn = new mysqli($servername, $username, $password, "mydb");
+ $conn = new mysqli($servername, $username, $password, "Newmydb");
         if ($conn->connect_error) {
   die(" Connection failed: " . $conn->connect_error);}
 
@@ -76,12 +76,12 @@ if (!$verwijder_product) {
     exit();
 }
 
-if ($delete_product){
+if ($verwijder_product){
         $stmt = $conn->prepare("DELETE FROM product WHERE Id = ?");
-    $stmt->bind_param("i", $delete_product);
+    $stmt->bind_param("i", $verwijder_product);
 
     if ($stmt->execute()) {
-        echo "prodct met id " . htmlspecialchars($delete_product) . "!";
+        echo "prodct met id " . htmlspecialchars($verwijder_product) . " successvol verwijderd!";
                 
 
     } else {

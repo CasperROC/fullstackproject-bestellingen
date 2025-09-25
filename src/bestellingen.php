@@ -28,13 +28,13 @@ $action2 = $_POST["action2"] ?? "";
     $servername = "mysql";
     $username = "root";
     $password = "password";
-    $conn = new mysqli($servername, $username, $password, "mydb");
+    $conn = new mysqli($servername, $username, $password, "Newmydb");
     if ($conn->connect_error) {
         die(" Connection failed: " . $conn->connect_error);
     }
 
     $result = $conn->query("SELECT Id, Naam FROM locatie");
-    $result2 = $conn->query("SELECT Id, Naam FROM product");
+    $result2 = $conn->query("SELECT Id, Naam, Prijs FROM product");
     ?>
 
     <form method="POST" action="">
@@ -49,7 +49,7 @@ $action2 = $_POST["action2"] ?? "";
         <label for="product">Selecteer een product:</label>
         <select name="product_id" id="product">
             <?php while($row = $result2->fetch_assoc()): ?>
-                <option value="<?= $row['Id'] ?>"><?= $row['Id'] ?>, <?= $row['Naam'] ?></option>
+                <option value="<?= $row['Id'] ?>"><?= $row['Id'] ?>, <?= $row['Naam'] ?>, $<?= $row['Prijs'] ?></option>
             <?php endwhile; ?>
         </select>
 
@@ -107,11 +107,13 @@ if ($action2 === "claim" && isset($_POST["Id"])) {
     $locatie_ID = $_POST['locID'] ?? null;
     $product_ID = $_POST['prodID'] ?? null;
     $prodAantal = $_POST['aantal'] ?? null;
-
+    $inkoopWaarde = $_POST['inkoopWaarde'] ?? null;
+    $verkoopWaarde = $_POST['verkoopWaarde'] ?? null;
+    
     if ($locatie_ID && $product_ID && $prodAantal) {
-        $insert_stmt = $conn->prepare("INSERT INTO locatie_has_product (locatie_Id1, product_Id1, Aantal) VALUES (?, ?, ?)
+        $insert_stmt = $conn->prepare("INSERT INTO locatie_has_product (locatie_Id1, product_Id1, WaardeInkoop, WaardeVerkoop, Aantal) VALUES (?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE Aantal = Aantal + ?");
-        $insert_stmt->bind_param("iiii", $locatie_ID, $product_ID, $prodAantal, $prodAantal);
+        $insert_stmt->bind_param("iiddii", $locatie_ID, $product_ID, $inkoopWaarde, $verkoopWaarde, $prodAantal, $prodAantal);
  
         if ($insert_stmt->execute()) {
             echo "Product (locatie: " . htmlspecialchars($locatie_ID) . ", product: " . htmlspecialchars($product_ID) . ") is aangemaakt.   ";
@@ -125,7 +127,19 @@ if ($action2 === "claim" && isset($_POST["Id"])) {
 }
 
 // Bestellingenlijst tonen
-$bestellingLijst = "SELECT Id, locatieID_besteld, productID_besteld, aantalbesteld FROM bestelling";
+//"SELECT Id, locatieID_besteld, productID_besteld, aantalbesteld FROM bestelling"
+$bestellingLijst = "SELECT 
+b.aantalbesteld,
+ b.Id,
+  b.locatieID_besteld,
+  b.productID_besteld,
+   l.Naam AS locatieNaam,
+    p.Naam AS productNaam,
+    p.prijs * b.aantalbesteld AS inkoopWaarde,
+     ROUND(p.prijs * b.aantalbesteld * 1.2, 2) AS verkoopWaarde
+FROM bestelling b
+JOIN locatie l ON l.Id = b.locatieID_besteld
+JOIN product p ON p.Id = b.productID_besteld";
 $bestelLijstResult = $conn->query($bestellingLijst);
 
 if ($bestelLijstResult->num_rows > 0) {
@@ -136,11 +150,17 @@ if ($bestelLijstResult->num_rows > 0) {
         $locID = $row["locatieID_besteld"];
         $prodID = $row["productID_besteld"];
         $aantal = $row["aantalbesteld"];
+        $locNaam = htmlspecialchars($row["locatieNaam"] ?? "");
+        $prodNaam = htmlspecialchars($row["productNaam"] ?? "");
+        $inkoopWaarde = htmlspecialchars($row["inkoopWaarde"] ?? "");
+           $verkoopWaarde = htmlspecialchars($row["verkoopWaarde"] ?? "");
         echo "<li style='margin-bottom:10px;'>
-                Id: $Id<br>
-                locationID: $locID <br>
-                productID: $prodID <br>
+                Id van bestelling: $Id<br>
+                locatie: $locID, $locNaam <br>
+                product: $prodID, $prodNaam <br>
                 aantal: $aantal <br>
+                inkoopWaarde: $inkoopWaarde <br>
+                verkoopWaarde: $verkoopWaarde <br>
                 <form method='post' action='' style='display:inline;'>
                     <input type='hidden' name='action' value='delete'>
                     <input type='hidden' name='Id' value='$Id'>
@@ -153,6 +173,8 @@ if ($bestelLijstResult->num_rows > 0) {
                     <input type='hidden' name='locID' value='$locID'>
                     <input type='hidden' name='prodID' value='$prodID'>
                     <input type='hidden' name='aantal' value='$aantal'>
+                    <input type='hidden' name='inkoopWaarde' value='$inkoopWaarde'>
+                    <input type='hidden' name='verkoopWaarde' value='$verkoopWaarde'>
                     <button type='submit'>Ontvangen</button>
                 </form>
               </li>";
