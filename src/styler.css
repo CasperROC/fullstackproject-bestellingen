@@ -25,15 +25,15 @@ font-family: cursive;
       display: inline-block;
       color: #ff009d;
       text-transform: uppercase;
-      animation: titletext 1.1s infinite;
-      animation-delay: calc(.1s * var(--i));
+      animation: titletext 0.1s infinite;
+      animation-delay: calc(0.1627s * var(--i));
     }
     @keyframes titletext {
       0%,5%,100% {
         transform: translateY(0)
       }
-      50% {
-        transform: translateY(-20px)
+      5% {
+        transform: translateY(-100px)
       }
     }
 

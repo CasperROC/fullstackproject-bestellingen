@@ -1,3 +1,23 @@
+<?php
+session_start();
+
+if(isset($_POST["name"])){
+$name = $_POST["name"];
+$pass = $_POST["password"];
+$_SESSION["name"] = $name;
+$_SESSION["password"] = $pass;
+
+}else if(isset($_SESSION["name"])){
+$name = $_SESSION["name"];
+$pass = $_SESSION["password"];
+}else{
+  echo "nope";
+  exit();
+}
+ ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,34 +29,49 @@
 <body>
 
     <?php 
-    //variabelen voor databaseverbinding
+ 
+
         $servername = "mysql";
     $username = "root";
     $password = "password";
 
-    //verbinding met database
      $conn = new mysqli($servername, $username, $password, "Newmydb");
         if ($conn->connect_error) {
   die(" Connection failed: " . $conn->connect_error);}
-    
+  
+$stmt = $conn->prepare("SELECT password FROM users WHERE username = ?");
+$stmt->bind_param("s", $name); 
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $hashed_password = $row["password"];
+}
+
+if (password_verify($pass, $hashed_password)){
+if ($name === 'adminaccount'){
+  echo "currect account: " . $name;
+} else {
+        echo "Page for admin use only.";
+        exit();
+    }
+} else {
+    echo "Password Incorrect";
+    exit();
+}
+
     ?>
 <h1 class="titletext">  
-  <span style="--i:1">s</span>
-  <span style="--i:2">i</span>
-  <span style="--i:3">g</span>
-  <span style="--i:4">n</span>
-  <span style="--i:5"> </span>
-  <span style="--i:6">i</span>
-  <span style="--i:7">n</span>
-  <span style="--i:8">:</span>
+  <span style="--i:1">create new account</span>
+
 </h1>
 <div class="textbrick">
 <form action="aftersignup.php" method="post">
-Name: <input type="text" name="name" minlength="3" maxlength="15"><br>
-Password: <input type="password" name="password" minlength="5" maxlength="15"><br>
+Name: <input type="text" name="namenewacc" minlength="3" maxlength="15"><br>
+Password: <input type="password" name="passwordnewacc" minlength="5" maxlength="15"><br>
 <input id="verzenden" type="submit" value="submit">
 
-<a id="entrybutton" href="login.php" class="button">log in</a>
         </div>
 </body>
 </html>
