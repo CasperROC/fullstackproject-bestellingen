@@ -37,6 +37,7 @@ Password: <input type="password" name="password" minlength="5" maxlength="15"><b
 <input id="verzenden" type="submit" value="submit">
 
 <a id="entrybutton" href="login.php" class="button">log in</a>
+
         </div>
 </body>
 </html>
