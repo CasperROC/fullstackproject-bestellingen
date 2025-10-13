@@ -92,7 +92,7 @@ $VrdLijst = "SELECT lhp.Aantal,
     p.Naam AS productNaam,
     p.Prijs AS productPrijs,
     p.prijs * lhp.Aantal AS WaardeInkoop1,
-     ROUND(p.prijs * lhp.Aantal * 1.2, 2) AS WaardeVerkoop1
+     ROUND(p.prijs * lhp.Aantal * p.multiplier, 2) AS WaardeVerkoop1
 FROM locatie_has_product lhp
 JOIN locatie l ON l.Id = lhp.locatie_Id1
 JOIN product p ON p.Id = lhp.product_Id1";

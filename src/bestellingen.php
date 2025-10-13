@@ -136,7 +136,7 @@ b.aantalbesteld,
    l.Naam AS locatieNaam,
     p.Naam AS productNaam,
     p.prijs * b.aantalbesteld AS inkoopWaarde,
-     ROUND(p.prijs * b.aantalbesteld * 1.2, 2) AS verkoopWaarde
+     ROUND(p.prijs * b.aantalbesteld * p.multiplier, 2) AS verkoopWaarde
 FROM bestelling b
 JOIN locatie l ON l.Id = b.locatieID_besteld
 JOIN product p ON p.Id = b.productID_besteld";
