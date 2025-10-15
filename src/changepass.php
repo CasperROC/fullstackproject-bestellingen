@@ -46,7 +46,7 @@ $pass = $_SESSION["password"];
         <input class="inner-div" type="password" name="old_password" required><br>
 
         <label for="new_password">new password:</label><br>
-        <input class="inner-div" type="password" name="new_password" required><br>
+        <input class="inner-div" type="password" name="new_password" minlength="5" maxlength="15" required ><br>
 
         <button type="submit">change password</button>
     </form>
