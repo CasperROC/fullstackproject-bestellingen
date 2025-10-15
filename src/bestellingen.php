@@ -23,7 +23,7 @@ $action2 = $_POST["action2"] ?? "";
     <link rel="stylesheet" href="styler.css">
 </head>
 <body>
-    <p>Welkom, <?php echo htmlspecialchars($name); ?>!</p>
+    <p class='randomtext'>Welkom, <?php echo htmlspecialchars($name); ?>!</p>
     <?php 
     $servername = "mysql";
     $username = "root";
@@ -154,7 +154,7 @@ if ($bestelLijstResult->num_rows > 0) {
         $prodNaam = htmlspecialchars($row["productNaam"] ?? "");
         $inkoopWaarde = htmlspecialchars($row["inkoopWaarde"] ?? "");
            $verkoopWaarde = htmlspecialchars($row["verkoopWaarde"] ?? "");
-        echo "<li style='margin-bottom:10px;'>
+        echo "<li class='randomtext' style='margin-bottom:10px;'>
                 Id van bestelling: $Id<br>
                 locatie: $locID, $locNaam <br>
                 product: $prodID, $prodNaam <br>
@@ -182,6 +182,6 @@ if ($bestelLijstResult->num_rows > 0) {
     echo "</ul>";
 }
 ?>
-    <a href="homepage.php" class="button">Terug naar Home</a>
+    <a href="homepage.php" class="link">Terug naar Home</a>
 </body>
 </html>

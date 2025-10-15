@@ -21,14 +21,15 @@ if(isset($_SESSION["name"])){
   die(" Connection failed: " . $conn->connect_error);}
     
     ?>
-<h1 class="titletext">  
+    <h1 class="bigtext">Tools 4 Ever</h1>
+<h2 class="titletext">  
   <span style="--i:1">l</span>
   <span style="--i:2">o</span>
   <span style="--i:3">g</span>
   <span style="--i:4"> </span>
   <span style="--i:5">i</span>
   <span style="--i:6">n</span>
-  <span style="--i:7">:</span></h1>
+  <span style="--i:7">:</span></h2>
 <form class="textbrick" action="homepage.php" method="post">
 Name: <input type="text" name="name" required><br>
 Password: <input type="password" name="password" required><br>

@@ -1,11 +1,85 @@
 body {
-  background-color: rgba(233, 231, 171, 0.981);
+  background-color: rgba(237, 237, 237, 0.98);
   color:rgba(44, 109, 114, 0.925);
 }
 
+input {
+  font-size: 0.8rem;
+  font-family: monospace;
+  border: 2px solid rgb(92, 92, 92);
+  border-radius: 6.5px;
+}
+
+form {
+  text-decoration: none;
+  color: rgb(219, 172, 64);
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.prodinfo{
+   text-decoration: none;
+  color: rgb(255, 11, 11);
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.prodlijst{
+   text-decoration: none;
+  color: rgb(30, 30, 30);
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.randomtext{
+   text-decoration: none;
+  color: rgb(84, 84, 84);
+  font-family: helvetica;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+.randomtext2{
+   text-decoration: none;
+  color: rgb(218, 165, 22);
+  font-family: monospace;
+  font-size: 1rem;
+}
+.link{
+   text-decoration: none;
+   background-color: rgb(255, 255, 255);
+  color: rgb(45, 185, 206);
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+button{
+   text-decoration: none;
+   background-color: rgb(255, 255, 255);
+  color: rgb(45, 187, 206);
+  font-family: helvetica;
+  font-size: 1rem;
+  border-color: rgb(219, 172, 64);
+}
+
+button:hover{
+   text-decoration: none;
+   background-color: rgb(136, 198, 214);
+  color: rgb(255, 255, 255);
+  font-family: helvetica;
+  font-size: 1rem;
+  border-color: rgb(219, 172, 64);
+}
+.link:hover{
+
+   text-decoration: none;
+      background-color: rgb(45, 185, 206);
+  color: rgb(255, 255, 255);
+  font-family: monospace;
+  font-size: 1rem;
+}
 .textbrick{
 text-align: center;
-font-family: cursive;
+font-family: helvetica;
    font-size: 2rem;
 }
 
@@ -15,7 +89,7 @@ font-family: cursive;
 
  .titletext {
       position: relative;
-      -webkit-box-reflect: below -20px linear-gradient(transparent, rgb(255, 255, 255));
+      -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(255, 255, 255, 0.384));
       font-size: 60px;
     }
     .titletext span {
@@ -23,32 +97,40 @@ font-family: cursive;
     
       position: relative;
       display: inline-block;
-      color: #ff009d;
+      color: #58bdde;
       text-transform: uppercase;
-      animation: titletext 0.1s infinite;
+      animation: titletext 2.1s infinite;
       animation-delay: calc(0.1627s * var(--i));
     }
     @keyframes titletext {
-      0%,5%,100% {
+      0%,80%,100% {
         transform: translateY(0)
       }
-      5% {
-        transform: translateY(-100px)
+      25% {
+        transform: translateY(-20px)
       }
     }
 
-    #verzenden{
-        background-color: rgba(171, 233, 216, 0.981);
-  color:rgb(59, 198, 101);
-  font-family: cursive;
+    .verzenden{
+        background-color: rgba(223, 223, 223, 0.981);
+  color:rgb(224, 169, 60);
+  font-family: Helvetica;
   font-size: 50px;
   border: none;
     }
     
-       #verzenden:hover{
-        background-color: rgba(59, 198, 101);
+       .verzenden:hover{
+        background-color: rgb(215, 172, 86);
   color:rgba(255, 255, 255, 0.925);
-  font-family: impact;
-  font-size: 70px;
+  font-family: helvetica;
+  font-size: 50px;
     }
+    
+    .bigtext{     
+        background-color: rgba(223, 223, 223, 0.981);
+  color:rgb(224, 169, 60);
+  font-family: Helvetica;
+  font-size: 5rem;
+  border: none;}
+    
     

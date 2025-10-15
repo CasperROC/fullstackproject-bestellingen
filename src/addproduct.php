@@ -30,16 +30,16 @@ $pass = $_SESSION["password"];
     <link rel="stylesheet" href="styler.css">
 </head>
 <body>
-    <p>Welkom, <?php echo htmlspecialchars($name); ?>!</p>
+    <p class="randomtext" >Welkom, <?php echo htmlspecialchars($name); ?>!</p>
 
     <form action="" method="post">
           <input type="hidden" name="action" value="add">
-Naam van nieuw product: <input type="text" name="productNaam" minlength="3" maxlength="25"><br>
+Naam van nieuw product: <input  type="text" name="productNaam" minlength="3" maxlength="25"><br>
 Naam van product type: <input type="text" name="productType" minlength="3" maxlength="25"><br>
 Naam van fabriek: <input type="text" name="productFabriek" minlength="3" maxlength="25"><br>
 product prijs: <input type="text" name="productPrijs" minlength="1" maxlength="25"><br>
 product verkoop multiplier: <input type="text" name="productWinst" minlength="1" maxlength="3"> (bijv. 1.5) <br>
-<input id="verzenden" type="submit" value="submit">
+<input class="verzenden" type="submit" value="submit">
         </form>
    
 </body>
@@ -138,7 +138,7 @@ if ($prodLijstResult->num_rows > 0) {
     $prodFabrieklijst = htmlspecialchars($row["Fabriek"]);
     $prodPrijslijst = htmlspecialchars($row["Prijs"]);
         $prodWinstlijst = htmlspecialchars($row["multiplier"] ?? '');
-    echo "<li style='margin-bottom:10px;'>
+    echo "<li class='prodlijst' style='margin-bottom:10px;'>
             Id: $prodIdlijst <br>
             Naam: $prodNaamlijst <br>
             Type: $prodTypelijst <br>
@@ -173,5 +173,5 @@ if ($prodLijstResult->num_rows > 0) {
 </html>
 <body>
     <hr>
-     <a href="homepage.php" class="button">Terug naar Home</a>
+     <a class="link" href="homepage.php" class="button">Terug naar Home</a>
 </body>

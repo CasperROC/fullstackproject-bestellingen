@@ -38,7 +38,7 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="styler.css">
 </head>
 <body>
-    <p>Welkom, <?php echo htmlspecialchars($name); ?>!</p>
+    <p class='randomtext'>Welkom, <?php echo htmlspecialchars($name); ?>!</p>
 
 <form method="POST" action="">
     <input type="hidden" name="action" value="filterLoc">
@@ -117,7 +117,7 @@ if ($VrdLijstResult->num_rows > 0) {
         $Verkoop = htmlspecialchars($row["WaardeVerkoop1"] ?? "");
         $locNaam = htmlspecialchars($row["locatieNaam"] ?? "");
         $prodNaam = htmlspecialchars($row["productNaam"] ?? "");
-        echo "<li style='margin-bottom:10px;'>
+        echo "<li class='randomtext' style='margin-bottom:10px;'>
                 Locatie: $LocID, $locNaam <br>
                 Product: $ProdID, $prodNaam <br>
                 Aantal op voorraad: $Aantal <br>
@@ -136,7 +136,7 @@ if ($VrdLijstResult->num_rows > 0) {
 ?>
 
 
-<a href="homepage.php" class="button">Terug naar Home</a>
+<a href="homepage.php" class="link">Terug naar Home</a>
 
 </body>
 </html>

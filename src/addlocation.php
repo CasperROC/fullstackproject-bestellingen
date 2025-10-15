@@ -30,7 +30,7 @@ $pass = $_SESSION["password"];
     <link rel="stylesheet" href="styler.css">
 </head>
 <body>
-    <p>Welkom, <?php echo htmlspecialchars($name); ?>!</p>
+    <p class='randomtext' >Welkom, <?php echo htmlspecialchars($name); ?>!</p>
 
     <form action="" method="post">
           <input type="hidden" name="action" value="add">
@@ -96,7 +96,7 @@ if ($locLijstResult->num_rows > 0) {
     while($row = $locLijstResult->fetch_assoc()){
         $Id = htmlspecialchars($row["Id"]);
     $Naam = htmlspecialchars($row["Naam"]);
-    echo "<li style='margin-bottom:10px;'>
+    echo "<li class='randomtext' style='margin-bottom:10px;'>
             Id: $Id <br>
             Naam: $Naam <br>
             <form method='post' action='' style='display:inline;'>
@@ -112,5 +112,5 @@ if ($locLijstResult->num_rows > 0) {
 </html>
 <body>
     <hr>
-     <a href="homepage.php" class="button">Terug naar Home</a>
+     <a href="homepage.php" class="link">Terug naar Home</a>
 </body>

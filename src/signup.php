@@ -72,7 +72,7 @@ Name: <input type="text" name="namenewacc" minlength="3" maxlength="15"><br>
 Password: <input type="password" name="passwordnewacc" minlength="5" maxlength="15"><br>
 <input id="verzenden" type="submit" value="submit">
 <br>
-<a href="homepage.php" class="button">Terug naar Home</a>
+<a href="homepage.php" class="link">Terug naar Home</a>
 
         </div>
 </body>

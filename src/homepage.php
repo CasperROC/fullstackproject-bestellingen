@@ -29,7 +29,7 @@ $pass = $_SESSION["password"];
 </head>
 
 <body>
-  <a href="login.php" class="button">back</a>
+  <a class="verzenden" href="login.php" class="button">Terug</a>
   <hr>
 <?php
 
@@ -54,7 +54,7 @@ if ($result->num_rows > 0) {
 
 //controleert of ingevoerde pass zelfde is als pass uit database
 if (password_verify($pass, $hashed_password)){
-echo "Welcome, " . $name;
+echo  "Welkom, " . $name;
 } else {
   echo "username or password incorrect";
   exit();
@@ -68,22 +68,25 @@ echo "Welcome, " . $name;
 
 <p>homepage!<p>
 
-<a href="login.php" class="button">Log out</a>
+
+
+<a class="link" href="addlocation.php" class="button">Locatielijst</a>
 <br>
-<a href="changepass.php" class="button">Change password</a>
+<a class="link" href="addproduct.php" class="button">Productlijst</a>
 <br>
-<a href="addlocation.php" class="button">Locations List</a>
+<a class="link" href="bestellingen.php" class="button">bestel producten</a>
 <br>
-<a href="addproduct.php" class="button">Products List</a>
+<a class="link" href="LocHasProduct.php" class="button">Voorraad</a>
+<br> <hr>
+<a class="link" href="signup.php" class="button">Maak nieuw account (admin)</a>
 <br>
-<a href="bestellingen.php" class="button">Order products</a>
-<br>
-<a href="LocHasProduct.php" class="button">Current stock</a>
-<br>
-<a href="signup.php" class="button">Create new account (admin only)</a>
-<br>
-  <a href="userlijst.php" class="button">Account list (admin only)</a>
+  <a class="link" href="userlijst.php" class="button">Account lijst (admin)</a>
   <br>
+<a class="link" href="changepass.php" class="button">Verander password</a>
+<br>
+<a class="link" href="login.php" class="button">Log uit</a>
+<br>
+
 </body>
 </html>
 
