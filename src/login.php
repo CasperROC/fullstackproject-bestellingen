@@ -21,7 +21,7 @@ if(isset($_SESSION["name"])){
   die(" Connection failed: " . $conn->connect_error);}
     
     ?>
-    <h1 class="bigtext">Tools 4 Ever</h1>
+    <h1 class="bigtext">Tools 4 Ever Voorraadbeheersysteem</h1>
 <h2 class="titletext">  
   <span style="--i:1">l</span>
   <span style="--i:2">o</span>
