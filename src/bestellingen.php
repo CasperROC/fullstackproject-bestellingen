@@ -55,7 +55,7 @@ $action2 = $_POST["action2"] ?? "";
 
         <input type="hidden" name="aantalaction" value="add">
         Aantal: <input type="number" name="Aantal" min="1" max="999999"><br>
-        <input id="bestellingverzenden" type="submit" name="bestellingsubmit" value="bestel">
+        <input class="verzenden" type="submit" name="bestellingsubmit" value="bestel">
     </form>
 
 <?php
