@@ -18,6 +18,7 @@ $pass = $_SESSION["password"];
         if ($conn->connect_error) {
   die(" Connection failed: " . $conn->connect_error);}
 
+  // null coalescing.  als action null is, dan leeg
   $action = $_POST["action"] ?? "";
 ?>
 
@@ -43,10 +44,10 @@ Name of new location: <input type="text" name="locationName" minlength="1" maxle
 
 if ($_SERVER["REQUEST_METHOD"] === "POST"){
 $action = $_POST["action"] ?? "";
-
+//als action add is en locationName is gepost
 if ($action === "add" && isset($_POST["locationName"])){
 $locNaam = $_POST["locationName"];
-
+//locationName word variabele, variabele word in database gezet
 $insert_stmt = $conn->prepare("INSERT INTO locatie (Naam) VALUES (?)");
 $insert_stmt->bind_param("s", $locNaam);
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["locationName"])){
@@ -62,13 +63,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["locationName"])){
 }
 
 
-
+//als action = verwijder, var verwijder_locnaam krijgt value van geposte Id
 if ($action === "verwijder" && isset($_POST["Id"])) {
 $verwijder_locnaam = $_POST['Id'] ?? null;
 if (!$verwijder_locnaam) {
     echo "Geen locatie gespecificeerd.";
     exit();
 }
+
+//als verwijder_locnaam value heeft, delete loc waar Id = verwijder_locnaam (eerder geposte Id)
 
 if ($verwijder_locnaam){
         $stmt = $conn->prepare("DELETE FROM locatie WHERE Id = ?");
@@ -89,10 +92,10 @@ if ($verwijder_locnaam){
 
 $locNaamLijst = "SELECT Id, Naam FROM locatie";
 $locLijstResult = $conn->query($locNaamLijst);
-
+//als rijen bestaan, maak lijst
 if ($locLijstResult->num_rows > 0) {
     echo "<ul>";
-
+//haal elke rij op als assoc array
     while($row = $locLijstResult->fetch_assoc()){
         $Id = htmlspecialchars($row["Id"]);
     $Naam = htmlspecialchars($row["Naam"]);
@@ -105,7 +108,7 @@ if ($locLijstResult->num_rows > 0) {
                 <button type='submit'>Verwijder</button>
             </form>
           </li>";
-
+// action word verwijder, gekozen id word meegegeven
     }
 }
 ?>
